@@ -1,6 +1,5 @@
 package course.legacy.homeguard;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +9,7 @@ public class CentralUnit {
 
 	private boolean armed = false;
 	private String securityCode;
-	private List sensors = new LinkedList();
+	List sensors = new LinkedList();
 	private HomeGuardView view = new TextView();
 	private AudibleAlarm audibleAlarm = new TextAudibleAlarm();
 
@@ -66,22 +65,8 @@ public class CentralUnit {
 		String status = tokens[1];
 
 		// find sensor with id
-		Sensor sensor = null;
-		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
-			Sensor s = (Sensor) iterator.next();
-			if (s.getId().equals(id)) {
-				sensor = s;
-				break;
-			}
-		}
-
-		// trip or reset sensor
-		if (sensor != null) {
-			if ("TRIPPED".equals(status))
-				sensor.trip();
-			else
-				sensor.reset();
-		}
+		Sensor sensor = findSensorWithId(id);
+		sensor.checkTripOrReset(status);
 
 		// get the message from the sensor and display it
 		String message = getSensorMessage(sensor);
@@ -95,53 +80,36 @@ public class CentralUnit {
 		updateSensorTestStatus(id, status);
 	}
 
-	private void updateSensorTestStatus(String id, String status) {
+	private Sensor findSensorWithId(String id) {
+		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
+			Sensor s = (Sensor) iterator.next();
+			if (s.getId().equals(id)) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	public void updateSensorTestStatus(String id, String status) {
 		if (diagnostics.runningSensorTest) {
 			if ("TRIPPED".equals(status)) {
 				diagnostics.sensorTestStatusMap.put(id, SensorTestStatus.PASS);
 			}
-
-			// check to see if test is complete
-			boolean done = true;
-			for (Iterator iterator = diagnostics.sensorTestStatusMap.values().iterator(); iterator.hasNext();) {
-				String testStatus = (String) iterator.next();
-				if (SensorTestStatus.PENDING.equals(testStatus)) {
-					done = false;
-					break;
-				}
-			}
-
-			// terminate test if complete
-			if (done)
-				terminateSensorTest();
+			updateWithCompleteStatus();
 		}
 	}
 
-	public void runSensorTest() {
-		diagnostics.runningSensorTest = true;
-		diagnostics.sensorTestStatus = SensorTestStatus.PENDING;
+	private void updateWithCompleteStatus() {
+		diagnostics.update();
+	}
 
-		// initialize the status map
-		diagnostics.sensorTestStatusMap = new HashMap();
-		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
-			Sensor sensor = (Sensor) iterator.next();
-			diagnostics.sensorTestStatusMap.put(sensor.getId(), SensorTestStatus.PENDING);
-		}
+	public void runSensorTest() {
+		diagnostics.run(sensors);
 	}
 
 	// used during sensor test
 	public void terminateSensorTest() {
-		diagnostics.runningSensorTest = false;
-
-		// look at individual sensor status to determine the overall test status
-		diagnostics.sensorTestStatus = SensorTestStatus.PASS;
-		for (Iterator iterator = diagnostics.sensorTestStatusMap.values().iterator(); iterator.hasNext();) {
-			String status = (String) iterator.next();
-			if (status.equals(SensorTestStatus.PENDING)) {
-				diagnostics.sensorTestStatus = SensorTestStatus.FAIL;
-				break;
-			}
-		}
+		diagnostics.terminateSensorTest();
 	}
 
 	// used during sensor test
