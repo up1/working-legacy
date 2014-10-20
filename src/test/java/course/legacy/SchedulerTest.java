@@ -47,6 +47,12 @@ public class SchedulerTest {
 			return false;
 		}
 	};
+	
+	TimeServices holidayTimeService = new TimeServices() {
+		public boolean isDateAHoliday(Date date) {
+			return true;
+		}
+	};
 
 	@Test
 	public void createScheduler() {
@@ -60,5 +66,13 @@ public class SchedulerTest {
 		Scheduler scheduler = new TestingScheduler("somkiat", new FakeDisplay());
 		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
 		assertEquals("For test", scheduler.getMeeting(now, DayTime.Time10AM, nonHolidayTimeService).getText());
+	}
+	
+	@Test
+	public void doesNotReturnMeetingWhenHoliday() throws Exception {
+		Date now = new Date();
+		Scheduler scheduler = new TestingScheduler("somkiat", new FakeDisplay());
+		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
+		assertNull("For test", scheduler.getMeeting(now, DayTime.Time10AM, holidayTimeService));
 	}
 }
