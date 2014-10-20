@@ -116,6 +116,10 @@ public class CentralUnit
 			audibleAlarm.sound();
 
 		// check if a sensor test is running and adjust status
+		updateSensorTestStatus(id, status);
+	}
+
+	private void updateSensorTestStatus(String id, String status) {
 		if(runningSensorTest)
 		{
 			if("TRIPPED".equals(status))
