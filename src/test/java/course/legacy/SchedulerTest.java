@@ -63,7 +63,6 @@ public class SchedulerTest {
 	@Test
 	public void returnMeetingWhenNotHoliday() throws Exception {
 		Date now = new Date();
-		Scheduler scheduler = new TestingScheduler("somkiat", new FakeDisplay());
 		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
 		assertEquals("For test", scheduler.getMeeting(now, DayTime.Time10AM, nonHolidayTimeService).getText());
 	}
@@ -71,8 +70,13 @@ public class SchedulerTest {
 	@Test
 	public void doesNotReturnMeetingWhenHoliday() throws Exception {
 		Date now = new Date();
-		Scheduler scheduler = new TestingScheduler("somkiat", new FakeDisplay());
 		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
-		assertNull("For test", scheduler.getMeeting(now, DayTime.Time10AM, holidayTimeService));
+		assertNull(scheduler.getMeeting(now, DayTime.Time10AM, holidayTimeService));
+	}
+	
+	@Test
+	public void doesNotFindMeetingWhenThereareNoMeeting() throws Exception {
+		Date now = new Date();
+		assertNull(scheduler.getMeeting(now, DayTime.Time10AM, holidayTimeService));
 	}
 }
