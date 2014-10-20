@@ -10,6 +10,7 @@ import course.legacy.scheduler.DayTime;
 import course.legacy.scheduler.Display;
 import course.legacy.scheduler.Event;
 import course.legacy.scheduler.MailService;
+import course.legacy.scheduler.Meeting;
 import course.legacy.scheduler.Scheduler;
 
 class FakeDisplay implements Display {
