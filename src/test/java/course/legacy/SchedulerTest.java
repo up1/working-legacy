@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import course.legacy.scheduler.DayTime;
@@ -34,10 +35,23 @@ class TestingScheduler extends Scheduler {
 
 public class SchedulerTest {
 
+	Scheduler scheduler;
+
+	@Before
+	public void init() {
+		scheduler = new TestingScheduler("somkiat", new FakeDisplay());
+	}
+
+	TimeServices nonHolidayTimeService = new TimeServices() {
+		public boolean isDateAHoliday(Date date) {
+			return false;
+		}
+	};
+
 	@Test
 	public void createScheduler() {
 		Date now = new Date();
-		new TestingScheduler("somkiat", new FakeDisplay()).addEvent(new Event(now, DayTime.Time10AM));
+		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
 	}
 
 	@Test
@@ -45,11 +59,6 @@ public class SchedulerTest {
 		Date now = new Date();
 		Scheduler scheduler = new TestingScheduler("somkiat", new FakeDisplay());
 		scheduler.addEvent(new Meeting(now, DayTime.Time10AM, "For test"));
-		assertEquals("For test", scheduler.getMeeting(now, DayTime.Time10AM, new TimeServices() {
-			public boolean isDateAHoliday(Date date) {
-				return false;
-			}
-		}).getText());
+		assertEquals("For test", scheduler.getMeeting(now, DayTime.Time10AM, nonHolidayTimeService).getText());
 	}
-
 }
