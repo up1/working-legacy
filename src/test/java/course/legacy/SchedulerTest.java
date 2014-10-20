@@ -22,7 +22,7 @@ class FakeDisplay implements Display {
 public class SchedulerTest {
 
 	@Test
-	public void testCreate() {
+	public void createScheduler() {
 		Date now = new Date();
 		new Scheduler("somkiat", new FakeDisplay()).addEvent(new Event(now, DayTime.Time10AM));
 	}
