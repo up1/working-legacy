@@ -8,14 +8,15 @@ import java.util.List;
 public class Scheduler {
 	private String owner = "";
 	private MailService mailService;
-	private SchedulerDisplay display;
+	private Display display;
 	private List events = new ArrayList();
 	
-	public Scheduler(String owner) {
+	public Scheduler(String owner, Display display) {
 		this.owner = owner;
 		
 		mailService = MailService.getInstance();
-		display = new SchedulerDisplay();		
+		//display = new SchedulerDisplay();
+		this.display = display;
 	}
 	
 	public void addEvent(Event event) {
