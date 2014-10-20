@@ -69,7 +69,7 @@ public class CentralUnit {
 		sensor.checkTripOrReset(status);
 
 		// get the message from the sensor and display it
-		String message = getSensorMessage(sensor);
+		String message = sensor.getMessage();
 		view.showMessage(message);
 
 		// sound the alarm if armed
@@ -120,29 +120,5 @@ public class CentralUnit {
 	// used during sensor test
 	public Map getSensorTestStatusMap() {
 		return diagnostics.sensorTestStatusMap;
-	}
-
-	public String getSensorMessage(Sensor sensor) {
-		String message = "default";
-		if (!sensor.isTripped()) {
-			if (sensor.getType().equals(Sensor.DOOR))
-				return sensor.getLocation() + " is closed";
-			else if (sensor.getType().equals(Sensor.WINDOW))
-				return sensor.getLocation() + " is sealed";
-			else if (sensor.getType().equals(Sensor.MOTION))
-				return sensor.getLocation() + " is motionless";
-			else if (sensor.getType().equals(Sensor.FIRE))
-				return sensor.getLocation() + " temperature is normal";
-		} else {
-			if (sensor.getType().equals(Sensor.DOOR))
-				return sensor.getLocation() + " is open";
-			else if (sensor.getType().equals(Sensor.WINDOW))
-				return sensor.getLocation() + " is ajar";
-			else if (sensor.getType().equals(Sensor.MOTION))
-				return "Motion detected in " + sensor.getLocation();
-			else if (sensor.getType().equals(Sensor.FIRE))
-				return sensor.getLocation() + " is on FIRE!";
-		}
-		return message;
 	}
 }
