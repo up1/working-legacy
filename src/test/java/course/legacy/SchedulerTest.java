@@ -75,7 +75,7 @@ public class SchedulerTest {
 	}
 	
 	@Test
-	public void doesNotFindMeetingWhenThereAreNoMeeting() throws Exception {
+	public void doesNotFindMeetingWhenTherereNoMeeting() throws Exception {
 		Date now = new Date();
 		assertNull(scheduler.getMeeting(now, DayTime.Time10AM, holidayTimeService));
 	}
