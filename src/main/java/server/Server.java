@@ -54,7 +54,7 @@ public class Server {
 		}
 	}
 
-	private Config buildConfigFromArgs(String[] args) {
+	public Config buildConfigFromArgs(String[] args) {
 		Config config = new Config();
 		config.smtpHost = args[0];
 		config.pop3Host = args[1];

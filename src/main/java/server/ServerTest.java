@@ -9,7 +9,8 @@ public class ServerTest {
 	@Test
 	public void testX() throws Exception {
 		Server server = new Server();
-		server.run(new String[]{"","", "", "", "", "1"});
+		Config config = server.buildConfigFromArgs(new String[]{"","", "", "", "", "1"});
+		assertFalse(config.debugOn);
 	}
 
 }
