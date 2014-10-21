@@ -9,13 +9,12 @@ package course.legacy.generalization;
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 
-
 public class LoginCommand extends Command {
 
 	public LoginCommand(String userName, String passwd) {
+		commandChar[0] = 0x01;
 		datas.add(userName);
 		datas.add(passwd);
-		commandChar[0] = 0x01;
 	}
 
 }
