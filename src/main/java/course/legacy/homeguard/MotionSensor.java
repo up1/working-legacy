@@ -9,10 +9,12 @@ public class MotionSensor extends Sensor {
 	public String getType() {
 		return MOTION;
 	}
+	
+	public String nonTrippedMessage() {
+		return getLocation() + " is motionless";
+	}
 
-	public String getMessage() {
-		if (!isTripped())
-			return getLocation() + " is motionless";
+	public String trippedMessage() {
 		return "Motion detected in " + getLocation();
 	}
 

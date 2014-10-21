@@ -1,6 +1,6 @@
 package course.legacy.homeguard;
 
-public class Sensor {
+public abstract class Sensor {
 	public static final String DOOR = "door";
 	public static final String MOTION = "motion";
 	public static final String WINDOW = "window";
@@ -53,7 +53,12 @@ public class Sensor {
 	}
 
 	public String getMessage() {
-		String message = "default";
-		return message;
+		if (!isTripped())
+			return nonTrippedMessage(); 
+		return trippedMessage();
 	}
+	
+	public abstract String nonTrippedMessage();
+
+	public abstract String trippedMessage();
 }

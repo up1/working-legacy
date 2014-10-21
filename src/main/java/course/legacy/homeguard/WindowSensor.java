@@ -9,10 +9,12 @@ public class WindowSensor extends Sensor {
 	public String getType() {
 		return WINDOW;
 	}
+	
+	public String nonTrippedMessage() {
+		return getLocation() + " is sealed";
+	}
 
-	public String getMessage() {
-		if (!isTripped())
-			return getLocation() + " is sealed";
+	public String trippedMessage() {
 		return getLocation() + " is ajar";
 	}
 

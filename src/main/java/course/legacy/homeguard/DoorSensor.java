@@ -1,7 +1,7 @@
 package course.legacy.homeguard;
 
 public class DoorSensor extends Sensor {
-
+	
 	public DoorSensor(String id, String location, String type) {
 		super(id, location, type);
 	}
@@ -10,9 +10,11 @@ public class DoorSensor extends Sensor {
 		return DOOR;
 	}
 
-	public String getMessage() {
-		if (!isTripped())
-			return getLocation() + " is closed";
+	public String nonTrippedMessage() {
+		return getLocation() + " is closed";
+	}
+
+	public String trippedMessage() {
 		return getLocation() + " is open";
 	}
 

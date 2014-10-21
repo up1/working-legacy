@@ -9,10 +9,12 @@ public class FireSensor extends Sensor {
 	public String getType() {
 		return FIRE;
 	}
+	
+	public String nonTrippedMessage() {
+		return getLocation() + " temperature is normal";
+	}
 
-	public String getMessage() {
-		if (!isTripped())
-			return getLocation() + " temperature is normal";
+	public String trippedMessage() {
 		return getLocation() + " is on FIRE!";
 	}
 
