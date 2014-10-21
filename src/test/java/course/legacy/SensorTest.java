@@ -7,12 +7,15 @@ import org.junit.Test;
 import course.legacy.homeguard.CentralUnit;
 import course.legacy.homeguard.DoorSensor;
 import course.legacy.homeguard.Sensor;
+import course.legacy.homeguard.WindowSensor;
 
 public class SensorTest {
 	
 	private static Sensor makeSensor(String id, String location, String type) {
 		if(Sensor.DOOR.equals(type)) {
 			return new DoorSensor(id, location, type);
+		} else if(Sensor.WINDOW.equals(type)) {
+			return new WindowSensor(id, location, type);
 		}
 		return new Sensor(id, location, type);
 	}
