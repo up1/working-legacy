@@ -12,16 +12,18 @@ import course.legacy.homeguard.Sensor;
 import course.legacy.homeguard.WindowSensor;
 
 public class SensorTest {
-	
+
 	private static Sensor makeSensor(String id, String location, String type) {
-		if(Sensor.DOOR.equals(type)) {
+		if (Sensor.DOOR.equals(type)) {
 			return new DoorSensor(id, location, type);
-		} else if(Sensor.WINDOW.equals(type)) {
+		} else if (Sensor.WINDOW.equals(type)) {
 			return new WindowSensor(id, location, type);
-		} else if(Sensor.MOTION.equals(type)) {
+		} else if (Sensor.MOTION.equals(type)) {
 			return new MotionSensor(id, location, type);
+		} else if (Sensor.FIRE.equals(type)) {
+			return new FireSensor(id, location, type);
 		}
-		return new FireSensor(id, location, type);
+		return new Sensor(id, location, type);
 	}
 
 	public static void assertSensorMessages(String type, String nonTrippedMessage, String trippedMessage) {
@@ -42,6 +44,7 @@ public class SensorTest {
 		assertSensorMessages(Sensor.WINDOW, "<x> is sealed", "<x> is ajar");
 		assertSensorMessages(Sensor.MOTION, "<x> is motionless", "Motion detected in <x>");
 		assertSensorMessages(Sensor.FIRE, "<x> temperature is normal", "<x> is on FIRE!");
+		assertSensorMessages("", "default", "default");
 	}
 
 }
