@@ -29,8 +29,7 @@ public class AddEmployeeCmd extends Command {
 	}
 
 	public int getSize() {
-		return header.length + SIZE_LENGTH + CMD_BYTE_LENGTH + footer.length + name.getBytes().length + 1 + address.getBytes().length + 1 + city.getBytes().length + 1 + state.getBytes().length + 1
-				+ yearlySalary.getBytes().length + 1;
+		return name.getBytes().length + 1 + address.getBytes().length + 1 + city.getBytes().length + 1 + state.getBytes().length + 1 + yearlySalary.getBytes().length + 1;
 	}
 
 	public void writeBody(OutputStream outputStream) throws Exception {

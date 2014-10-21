@@ -9,7 +9,6 @@ package course.legacy.generalization;
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 public class LoginCommand extends Command {
@@ -25,7 +24,7 @@ public class LoginCommand extends Command {
 	}
 
 	public int getSize() {
-		return header.length + SIZE_LENGTH + CMD_BYTE_LENGTH + footer.length + userName.getBytes().length + 1 + passwd.getBytes().length + 1;
+		return userName.getBytes().length + 1 + passwd.getBytes().length + 1;
 	}
 
 	public void writeBody(OutputStream outputStream) throws Exception {
