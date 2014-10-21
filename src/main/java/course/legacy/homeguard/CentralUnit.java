@@ -1,6 +1,5 @@
 package course.legacy.homeguard;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +8,15 @@ public class CentralUnit {
 
 	private boolean armed = false;
 	private String securityCode;
-	List sensors = new LinkedList();
+	private List sensors = new LinkedList();
 	private HomeGuardView view = new TextView();
 	private AudibleAlarm audibleAlarm = new TextAudibleAlarm();
 
 	Diagnostics diagnostics = new Diagnostics();
+	
+	public void addSensor(Sensor sensor) {
+		sensors.add(sensor);
+	}
 
 	public boolean isArmed() {
 		return armed;
@@ -59,28 +62,9 @@ public class CentralUnit {
 	}
 
 	public void parseRadioBroadcast(String packet) {
-		// parse the packet
-		String[] tokens = packet.split(",");
-		String id = tokens[0];
-		String status = tokens[1];
+		Packet newPacket = new Packet(packet);
 
-		// find sensor with id
-		Sensor sensor = null;
-		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
-			Sensor s = (Sensor) iterator.next();
-			if (s.getId().equals(id)) {
-				sensor = s;
-				break;
-			}
-		}
-
-		// trip or reset sensor
-		if (sensor != null) {
-			if ("TRIPPED".equals(status))
-				sensor.trip();
-			else
-				sensor.reset();
-		}
+		Sensor sensor = diagnostics.findSensorById(sensors, newPacket);
 
 		// get the message from the sensor and display it
 		String message = sensor.getMessage();
@@ -90,20 +74,10 @@ public class CentralUnit {
 		if (isArmed())
 			audibleAlarm.sound();
 
-		// check if a sensor test is running and adjust status
-		updateSensorTestStatus(id, status);
+		diagnostics.update(newPacket);
 	}
 
-	public void updateSensorTestStatus(String id, String status) {
-		if (diagnostics.runningSensorTest) {
-			if ("TRIPPED".equals(status)) {
-				diagnostics.sensorTestStatusMap.put(id, SensorTestStatus.PASS);
-			}
-			updateWithCompleteStatus();
-		}
-	}
-
-	private void updateWithCompleteStatus() {
+	public void updateWithCompleteStatus() {
 		diagnostics.update();
 	}
 

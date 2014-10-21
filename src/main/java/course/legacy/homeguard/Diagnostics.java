@@ -51,4 +51,35 @@ public class Diagnostics {
 		}
 	}
 
+	public void update(Packet packet) {
+		if (runningSensorTest) {
+			if ("TRIPPED".equals(packet.getStatus())) {
+				sensorTestStatusMap.put(packet.getId(), SensorTestStatus.PASS);
+			}
+			update();
+		}
+	}
+
+	public Sensor findSensorById(List sensors, Packet packet) {
+		// find sensor with id
+		Sensor sensor = null;
+		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
+			Sensor s = (Sensor) iterator.next();
+			if (s.getId().equals(packet.getId())) {
+				sensor = s;
+				break;
+			}
+		}
+
+		// trip or reset sensor
+		if (sensor != null) {
+			if ("TRIPPED".equals(packet.getStatus()))
+				sensor.trip();
+			else
+				sensor.reset();
+		}
+
+		return sensor;
+	}
+
 }
