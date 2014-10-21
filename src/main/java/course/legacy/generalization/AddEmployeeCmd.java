@@ -18,32 +18,20 @@ public class AddEmployeeCmd extends Command {
 	String state;
 	String yearlySalary;
 
-	private static final byte[] commandChar = { 0x02 };
-
 	public AddEmployeeCmd(String name, String address, String city, String state, int yearlySalary) {
 		this.name = name;
 		this.address = address;
 		this.city = city;
 		this.state = state;
 		this.yearlySalary = Integer.toString(yearlySalary);
-	}
-
-	public int getSize() {
-		return name.getBytes().length + 1 + address.getBytes().length + 1 + city.getBytes().length + 1 + state.getBytes().length + 1 + yearlySalary.getBytes().length + 1;
-	}
-
-	public void writeBody(OutputStream outputStream) throws Exception {
-		outputStream.write(commandChar);
-		outputStream.write(name.getBytes());
-		outputStream.write(0x00);
-		outputStream.write(address.getBytes());
-		outputStream.write(0x00);
-		outputStream.write(city.getBytes());
-		outputStream.write(0x00);
-		outputStream.write(state.getBytes());
-		outputStream.write(0x00);
-		outputStream.write(yearlySalary.getBytes());
-		outputStream.write(0x00);
+		
+		datas.add(name);
+		datas.add(address);
+		datas.add(city);
+		datas.add(state);
+		datas.add(this.yearlySalary);
+		
+		commandChar[0] = 0x02;
 	}
 
 }
