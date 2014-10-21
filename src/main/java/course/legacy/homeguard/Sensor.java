@@ -45,13 +45,6 @@ public abstract class Sensor {
 		this.tripped = tripped;
 	}
 
-	public void checkTripOrReset(String status) {
-		if ("TRIPPED".equals(status))
-			trip();
-		else
-			reset();
-	}
-
 	public String getMessage() {
 		if (!isTripped())
 			return nonTrippedMessage(); 

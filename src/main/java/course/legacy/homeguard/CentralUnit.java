@@ -65,8 +65,22 @@ public class CentralUnit {
 		String status = tokens[1];
 
 		// find sensor with id
-		Sensor sensor = findSensorWithId(id);
-		sensor.checkTripOrReset(status);
+		Sensor sensor = null;
+		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
+			Sensor s = (Sensor) iterator.next();
+			if (s.getId().equals(id)) {
+				sensor = s;
+				break;
+			}
+		}
+
+		// trip or reset sensor
+		if (sensor != null) {
+			if ("TRIPPED".equals(status))
+				sensor.trip();
+			else
+				sensor.reset();
+		}
 
 		// get the message from the sensor and display it
 		String message = sensor.getMessage();
@@ -78,16 +92,6 @@ public class CentralUnit {
 
 		// check if a sensor test is running and adjust status
 		updateSensorTestStatus(id, status);
-	}
-
-	private Sensor findSensorWithId(String id) {
-		for (Iterator iterator = sensors.iterator(); iterator.hasNext();) {
-			Sensor s = (Sensor) iterator.next();
-			if (s.getId().equals(id)) {
-				return s;
-			}
-		}
-		return null;
 	}
 
 	public void updateSensorTestStatus(String id, String status) {
