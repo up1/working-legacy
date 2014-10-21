@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import course.legacy.homeguard.CentralUnit;
 import course.legacy.homeguard.DoorSensor;
+import course.legacy.homeguard.FireSensor;
+import course.legacy.homeguard.MotionSensor;
 import course.legacy.homeguard.Sensor;
 import course.legacy.homeguard.WindowSensor;
 
@@ -16,8 +18,10 @@ public class SensorTest {
 			return new DoorSensor(id, location, type);
 		} else if(Sensor.WINDOW.equals(type)) {
 			return new WindowSensor(id, location, type);
+		} else if(Sensor.MOTION.equals(type)) {
+			return new MotionSensor(id, location, type);
 		}
-		return new Sensor(id, location, type);
+		return new FireSensor(id, location, type);
 	}
 
 	public static void assertSensorMessages(String type, String nonTrippedMessage, String trippedMessage) {
