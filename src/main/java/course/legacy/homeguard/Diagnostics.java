@@ -71,13 +71,7 @@ public class Diagnostics {
 			}
 		}
 
-		// trip or reset sensor
-		if (sensor != null) {
-			if ("TRIPPED".equals(packet.getStatus()))
-				sensor.trip();
-			else
-				sensor.reset();
-		}
+		
 
 		return sensor;
 	}

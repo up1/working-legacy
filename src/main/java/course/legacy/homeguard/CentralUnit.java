@@ -59,17 +59,16 @@ public class CentralUnit {
 
 	public void parseRadioBroadcast(String packet) {
 		Packet newPacket = new Packet(packet);
-
 		Sensor sensor = diagnostics.findSensorById(sensors, newPacket);
+		if(sensor == null)
+			return;
+		
+		sensor.adjustStatus(newPacket.getStatus());
 
-		// get the message from the sensor and display it
 		String message = sensor.getMessage();
 		view.showMessage(message);
-
-		// sound the alarm if armed
 		if (isArmed())
 			audibleAlarm.sound();
-
 		diagnostics.update(newPacket);
 	}
 

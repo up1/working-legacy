@@ -40,18 +40,25 @@ public abstract class Sensor {
 	public boolean isTripped() {
 		return tripped;
 	}
-	
+
 	public void setTripped(boolean tripped) {
 		this.tripped = tripped;
 	}
 
 	public String getMessage() {
 		if (!isTripped())
-			return nonTrippedMessage(); 
+			return nonTrippedMessage();
 		return trippedMessage();
 	}
-	
+
 	public abstract String nonTrippedMessage();
 
 	public abstract String trippedMessage();
+
+	public void adjustStatus(String status) {
+		if ("TRIPPED".equals(status))
+			trip();
+		else
+			reset();
+	}
 }
