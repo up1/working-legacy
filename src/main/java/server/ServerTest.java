@@ -9,7 +9,7 @@ public class ServerTest {
 	@Test
 	public void testX() throws Exception {
 		Server server = new Server();
-		server.run(null);
+		server.run(new String[]{"","", "", "", "", "1"});
 	}
 
 }

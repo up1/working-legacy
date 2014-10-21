@@ -9,5 +9,6 @@ public class Config {
 	public String emailListFile;
 	public String fromName;
 	public int checkPeriod;
+	public boolean debugOn;
 
 }

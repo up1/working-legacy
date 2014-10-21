@@ -54,14 +54,6 @@ public class Server {
 		}
 	}
 
-	/**
-	 * main() is used to start an instance of the Server
-	 */
-	public static void main(String args[]) throws Exception {
-		Server server = new Server();
-		server.run(args);
-	}
-
 	private Config buildConfigFromArgs(String[] args) {
 		Config config = new Config();
 		config.smtpHost = args[0];
@@ -74,32 +66,32 @@ public class Server {
 
 		if (args.length > 6)
 			config.fromName = args[6];
+		
+		if (config.fromName != null)
+			config.fromName = config.fromName;
+
+		config.debugOn = false;
 
 		return config;
+	}
+
+	/**
+	 * main() is used to start an instance of the Server
+	 */
+	public static void main(String args[]) throws Exception {
+		Server server = new Server();
+		server.run(args);
 	}
 
 	public void run(String[] args) throws FileNotFoundException, IOException, AddressException, NoSuchProviderException, MessagingException, UnsupportedEncodingException, InterruptedException {
 		checkArgsEXitIfWrong(args);
 		Config config = buildConfigFromArgs(args);
 
-		// Process every "checkPeriod" minutes
-		//
-		Server ls = new Server();
-		ls.debugOn = false;
-
 		while (true) {
-			if (ls.debugOn)
+			if (config.debugOn)
 				System.out.println(new Date() + "> " + "SESSION START");
-			ls._smtpHost = config.smtpHost;
-			ls._pop3Host = config.pop3Host;
-			ls._user = config.user;
-			ls._password = config.password;
-			ls._listFile = config.emailListFile;
-			if (config.fromName != null)
-				ls._fromName = config.fromName;
 
 			// Read in email list file into java.util.Vector
-			//
 			Vector vList = new Vector(10);
 			BufferedReader listFile = new BufferedReader(new FileReader(config.emailListFile));
 			String line = null;
@@ -107,11 +99,11 @@ public class Server {
 				vList.addElement(new InternetAddress(line));
 			}
 			listFile.close();
-			if (ls.debugOn)
+			if (config.debugOn)
 				System.out.println(new Date() + "> " + "Found " + vList.size() + " email ids in list");
 
-			ls.toList = new InternetAddress[vList.size()];
-			vList.copyInto(ls.toList);
+			toList = new InternetAddress[vList.size()];
+			vList.copyInto(toList);
 			vList = null;
 
 			//
@@ -122,12 +114,12 @@ public class Server {
 			//
 			Properties sysProperties = System.getProperties();
 			Session session = Session.getDefaultInstance(sysProperties, null);
-			session.setDebug(ls.debugOn);
+			session.setDebug(config.debugOn);
 
 			// Connect to host
 			//
 			Store store = session.getStore(Server.POP_MAIL);
-			store.connect(config.pop3Host, -1, ls._user, ls._password);
+			store.connect(config.pop3Host, -1, config.user, config.password);
 
 			// Open the default folder
 			//
@@ -145,7 +137,7 @@ public class Server {
 			folder.open(Folder.READ_WRITE);
 			int totalMessages = folder.getMessageCount();
 			if (totalMessages == 0) {
-				if (ls.debugOn)
+				if (config.debugOn)
 					System.out.println(new Date() + "> " + folder + " is empty");
 				folder.close(false);
 				store.close();
@@ -167,7 +159,7 @@ public class Server {
 				for (int i = 0; i < messages.length; i++) {
 					if (!messages[i].isSet(Flags.Flag.SEEN)) {
 						Message message = messages[i];
-						String replyTo = ls._user, subject, xMailer, messageText;
+						String replyTo = config.user, subject, xMailer, messageText;
 						Date sentDate;
 						int size;
 						Address[] a = null;
@@ -183,26 +175,26 @@ public class Server {
 						String[] hdrs = message.getHeader("X-Mailer");
 						if (hdrs != null)
 							xMailer = hdrs[0];
-						String from = ls._user;
+						String from = config.user;
 
 						// Send message
 						//
 						// create some properties and get the default Session
 						//
 						Properties props = new Properties();
-						props.put("mail.smtp.host", ls._smtpHost);
+						props.put("mail.smtp.host", config.smtpHost);
 						Session session1 = Session.getDefaultInstance(props, null);
 
 						// create a message
 						//
 						Address replyToList[] = { new InternetAddress(replyTo) };
 						Message newMessage = new MimeMessage(session1);
-						if (ls._fromName != null)
-							newMessage.setFrom(new InternetAddress(from, ls._fromName + " on behalf of " + replyTo));
+						if (config.fromName != null)
+							newMessage.setFrom(new InternetAddress(from, config.fromName + " on behalf of " + replyTo));
 						else
 							newMessage.setFrom(new InternetAddress(from));
 						newMessage.setReplyTo(replyToList);
-						newMessage.setRecipients(Message.RecipientType.BCC, ls.toList);
+						newMessage.setRecipients(Message.RecipientType.BCC, toList);
 						newMessage.setSubject(subject);
 						newMessage.setSentDate(sentDate);
 
@@ -211,11 +203,11 @@ public class Server {
 						Object content = message.getContent();
 						String debugText = "Subject: " + subject + ", Sent date: " + sentDate;
 						if (content instanceof Multipart) {
-							if (ls.debugOn)
+							if (config.debugOn)
 								System.out.println(new Date() + "> " + "Sending Multipart message (" + debugText + ")");
 							newMessage.setContent((Multipart) message.getContent());
 						} else {
-							if (ls.debugOn)
+							if (config.debugOn)
 								System.out.println(new Date() + "> " + "Sending Text message (" + debugText + ")");
 							newMessage.setText((String) content);
 						}
@@ -226,8 +218,8 @@ public class Server {
 						// Send newMessage
 						//
 						Transport transport = session1.getTransport(Server.SMTP_MAIL);
-						transport.connect(ls._smtpHost, ls._user, ls._password);
-						transport.sendMessage(newMessage, ls.toList);
+						transport.connect(config.smtpHost, config.user, config.password);
+						transport.sendMessage(newMessage, toList);
 					}
 					messages[i].setFlag(Flags.Flag.DELETED, true);
 				}
@@ -235,7 +227,7 @@ public class Server {
 				folder.close(true);
 				store.close();
 			}
-			if (ls.debugOn)
+			if (config.debugOn)
 				System.out.println(new Date() + "> " + "SESSION END (Going to sleep for " + config.checkPeriod + " minutes)");
 			Thread.sleep(config.checkPeriod * 1000 * 60);
 		}
