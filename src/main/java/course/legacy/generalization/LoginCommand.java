@@ -9,20 +9,12 @@ package course.legacy.generalization;
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class LoginCommand extends Command {
 
-	private String userName;
-	private String passwd;
-
 	public LoginCommand(String userName, String passwd) {
-		this.userName = userName;
-		this.passwd = passwd;
-		
-		datas.add(this.userName);
-		datas.add(this.passwd);
+		datas.add(userName);
+		datas.add(passwd);
 		commandChar[0] = 0x01;
 	}
 

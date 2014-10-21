@@ -9,28 +9,16 @@ package course.legacy.generalization;
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 
-import java.io.OutputStream;
 
 public class AddEmployeeCmd extends Command {
-	String name;
-	String address;
-	String city;
-	String state;
-	String yearlySalary;
 
 	public AddEmployeeCmd(String name, String address, String city, String state, int yearlySalary) {
-		this.name = name;
-		this.address = address;
-		this.city = city;
-		this.state = state;
-		this.yearlySalary = Integer.toString(yearlySalary);
-		
 		datas.add(name);
 		datas.add(address);
 		datas.add(city);
 		datas.add(state);
-		datas.add(this.yearlySalary);
-		
+		datas.add(Integer.toString(yearlySalary));
+
 		commandChar[0] = 0x02;
 	}
 
