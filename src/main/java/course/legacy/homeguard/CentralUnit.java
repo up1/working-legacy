@@ -13,10 +13,6 @@ public class CentralUnit {
 	private AudibleAlarm audibleAlarm = new TextAudibleAlarm();
 
 	Diagnostics diagnostics = new Diagnostics();
-	
-	public void addSensor(Sensor sensor) {
-		sensors.add(sensor);
-	}
 
 	public boolean isArmed() {
 		return armed;
