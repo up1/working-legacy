@@ -1,23 +1,44 @@
 package course.legacy.conditional;
-class Robot
-{
-	public void wagTail() {}
-	public void smile() {}
-	public void lookLeft() {}
-	public void lookRight() {}
-	public void dance() {}
-	public void screamLikeAMonkey() {}
+
+class Robot {
+	public void wagTail() {
+	}
+
+	public void smile() {
+	}
+
+	public void lookLeft() {
+	}
+
+	public void lookRight() {
+	}
+
+	public void dance() {
+	}
+
+	public void screamLikeAMonkey() {
+	}
 }
 
+class Environment {
+	public boolean motionToTheLeft() {
+		return false;
+	}
 
-class Environment
-{
-	public boolean motionToTheLeft() { return false; }
-	public boolean motionToTheRight() { return false; }
-	public boolean motionBelow() { return false; }
-	public boolean motionAbove() { return false; }
-	
+	public boolean motionToTheRight() {
+		return false;
+	}
+
+	public boolean motionBelow() {
+		return false;
+	}
+
+	public boolean motionAbove() {
+		return false;
+	}
+
 }
+
 public class ConditionalCarnage {
 	public void runOpeningSequence() {
 		Robot robot = new Robot();
@@ -26,21 +47,23 @@ public class ConditionalCarnage {
 		robot.wagTail();
 		if (sense.motionToTheLeft()) {
 			robot.lookLeft();
-			if (sense.motionToTheRight()) {
+			if (sense.motionToTheLeft() && sense.motionToTheRight()) {
 				robot.lookRight();
-			} else {
+			}
+			if (sense.motionToTheLeft() && !sense.motionToTheRight()) {
 				robot.dance();
 			}
 		} else if (sense.motionToTheRight()) {
 			robot.lookLeft();
-			if (sense.motionToTheLeft()) {
+			if (sense.motionToTheRight() && sense.motionToTheLeft()) {
 				robot.smile();
-			} else {
+			}
+			if (sense.motionToTheRight() && !sense.motionToTheLeft()) {
 				robot.dance();
 			}
-		} else if (sense.motionBelow() || sense.motionAbove()){
+		} else if (sense.motionBelow() || sense.motionAbove()) {
 			robot.screamLikeAMonkey();
-		}		
+		}
 	}
 
 }
