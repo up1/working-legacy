@@ -1,10 +1,10 @@
 package course.legacy.pointofsale;
+
 import java.util.HashMap;
 
-
 public class Inventory {
-	private HashMap<String,Item> items = new HashMap<String,Item>();
-	
+	private HashMap<String, Item> items = new HashMap<String, Item>();
+
 	public Inventory() {
 		Item milk = new Item("Milk", new Money(7000));
 		items.put("1", new Item("Preserved Duck Eggs", new Money(150000)));
@@ -17,6 +17,13 @@ public class Inventory {
 		if (item == null)
 			item = new NullItem();
 		return item;
+	}
+
+	public void item(String barcode, Told<Item> told) {
+		Item item = items.get(barcode);
+		if (item == null)
+			item = new NullItem();
+		told.tell(item);
 	}
 
 }

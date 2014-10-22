@@ -12,9 +12,12 @@ public class Sale {
 	}
 
 	public void addBarcode(String barcode) throws ItemNotFoundException {
-		Item item = inventory.itemForBarcode(barcode);
-		items.add(item);
-		listener.itemAdded(item);
+		inventory.item(barcode, new Told<Item>() {
+			public void tell(Item item) {
+				items.add(item);
+				listener.itemAdded(item);
+			}
+		});
 	}
 
 	public void subtotal() {
