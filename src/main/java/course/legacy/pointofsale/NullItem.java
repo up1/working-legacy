@@ -7,7 +7,7 @@ public class NullItem extends Item {
 	}
 	
 	public boolean isReal() {
-		return true;
+		return false;
 	}
 
 }
