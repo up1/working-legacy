@@ -83,5 +83,10 @@ public class SaleTest {
 		sale.total();
 		assertEquals("Total $70.00", display.lastShownLine);	
 	}
+	
+	@Test
+	public void x() {
+		sale.addBarcode("30");
+	}
 
 }
