@@ -8,8 +8,8 @@ import course.legacy.pointofsale.Inventory;
 
 public class InventoryTest {
 
-	@Test
-	public void returnNullWhenItemNotFoundWithBarcode() {
+	@Test(expected=RuntimeException.class)
+	public void returnExceptionWhenItemNotFoundWithBarcode() {
 		Inventory inventory = new Inventory();
 		assertNull(inventory.itemForBarcode(""));
 	}

@@ -84,8 +84,8 @@ public class SaleTest {
 		assertEquals("Total $70.00", display.lastShownLine);	
 	}
 	
-	@Test
-	public void x() {
+	@Test(expected=RuntimeException.class)
+	public void returnRuntimeExceptionWhenAddBarcodeOfNot() {
 		sale.addBarcode("30");
 	}
 
