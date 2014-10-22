@@ -13,9 +13,6 @@ public class Inventory {
 	}
 
 	public Item itemForBarcode(String barcode) {
-		Item item = items.get(barcode);
-		if(item == null)
-			throw new RuntimeException("Item not found with barcode=" + barcode);
 		return items.get(barcode);
 	}
 

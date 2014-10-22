@@ -12,8 +12,10 @@ public class Sale {
 		this.listener = listener;
 	}
 
-	public void addBarcode(String barcode) {
+	public void addBarcode(String barcode) throws ItemNotFoundException{
 		Item item = inventory.itemForBarcode(barcode);
+		if(item == null)
+			throw new ItemNotFoundException("Not found item by barcode=" + barcode);
 		items.add(item);
 		
 		listener.itemAdded(item);
