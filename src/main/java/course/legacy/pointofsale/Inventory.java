@@ -13,7 +13,10 @@ public class Inventory {
 	}
 
 	public Item itemForBarcode(String barcode) {
-		return items.get(barcode);
+		Item item = items.get(barcode);
+		if (item == null)
+			item = new NullItem();
+		return item;
 	}
 
 }

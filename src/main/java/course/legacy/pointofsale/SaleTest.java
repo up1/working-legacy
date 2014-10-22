@@ -92,5 +92,22 @@ public class SaleTest {
 		sale.addBarcode("30");
 		assertEquals("Item not found $0.00", display.lastShownLine);
 	}
+	
+	@Test
+	public void canTotalUnFoundItem() throws ItemNotFoundException {
+		sale.addBarcode("30");
+		sale.addBarcode("40");
+		sale.total();
+		assertEquals("Total $0.00", display.lastShownLine);
+	}
+	
+	@Test
+	public void canTotalUnFoundItemwithFoundItem() throws ItemNotFoundException {
+		sale.addBarcode("30");
+		sale.addBarcode("40");
+		sale.addBarcode("3");
+		sale.total();
+		assertEquals("Total $70.00", display.lastShownLine);
+	}
 
 }
