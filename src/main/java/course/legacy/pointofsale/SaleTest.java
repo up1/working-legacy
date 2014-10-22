@@ -46,7 +46,7 @@ public class SaleTest {
 	}
 
 	@Test
-	public void canSellPreservedDuckEggs() {
+	public void canSellPreservedDuckEggs()  throws ItemNotFoundException{
 		FakeListener listener = new FakeListener();
 		sale = new Sale(listener);
 		sale.addBarcode("1");

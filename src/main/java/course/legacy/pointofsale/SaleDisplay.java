@@ -1,23 +1,23 @@
 package course.legacy.pointofsale;
+
 import java.text.NumberFormat;
 
-class SaleDisplay implements SaleEventListener
-{
+class SaleDisplay implements SaleEventListener {
 	private Display display;
-	
+
 	public SaleDisplay(Display display) {
 		this.display = display;
 	}
-	
-	public void itemAdded(Item item) {	
+
+	public void itemAdded(Item item) {
 		display.showLine(item.getDisplayLine());
 	}
 
-	public void subtotaled(Money subtotal) {		
+	public void subtotaled(Money subtotal) {
 		display.showLine("Subtotal " + subtotal.asText());
 	}
-	
-	public void totalled(Money total) {		
+
+	public void totalled(Money total) {
 		display.showLine("Total " + total.asText());
 
 	}
