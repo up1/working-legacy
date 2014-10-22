@@ -88,7 +88,7 @@ public class SaleTest {
 	}
 
 	@Test
-	public void x() throws ItemNotFoundException {
+	public void returnDataForItemNotFound() throws ItemNotFoundException {
 		sale.addBarcode("30");
 		assertEquals("Item not found $0.00", display.lastShownLine);
 	}
